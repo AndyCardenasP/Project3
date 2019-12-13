@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html style="height:100%">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+  <title>Pizza Hut</title>
+</head>
+
+<body style="height:100%; background-image: url(/static/pizzareal.jpg);">
+  {% if Category %}
+  <!--hide when not logged in-->
+  {% if user.is_superuser %}
+  <nav class="navbar navbar-inverse " style="background-color: lightgray;">
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <img style="width:12%;max-height: -webkit-fill-available; float:left" src="/static/pizzahot.jpg">
+      <div>
+        <h1 style="margin-left:45%"><strong>Pizza Hut</strong></h1>
+      </div>
+    <a style="float:right" href="{% url 'index' %}"><img src="{% static 'home.png' %}"></a>
+      <ul class="mr-auto">
+        <li class="nav-item">
+          <a class="navbar-text" href="{% url 'orders_manager' user Order_number %}" style="color:black; font-size: 20px;"><strong>Orders manager</strong></a>
+
+        </li>
+
+      </ul>
+      <ul class="ml-auto">
+        <a class=" ml-auto navbar-text" href=# style="color:black; float:right;font-size: 20px;"><strong>{{user.username}}</strong></a>
+        <a class="ml-auto navbar-text" href="{% url 'logout' %}" style="color:black; float:right;font-size: 20px"> Log out&nbsp;</a>
+    </div>
+    </ul>
+  </nav>
+  <div id='center_box' class='w-50  mx-auto  '>
+    <div id='my_orders_container' class='w-50 mx-auto'>
+      <div class=' text-left pr-3'>
+        <ul>
+          {% for row in All_orders%}
+          <li class='p-2'>
+            <a href="{% url 'orders_manager' row.user row.order_number  %}" style="color:black"><span>Order no: {{row.order_number}} by
+                {{row.user}}</span></a>
+            <a href="{% url 'complete_order' row.user row.order_number  %}" style="color:black"><span
+                class='float-right mx-2 p-1 bg-info rounded text-white'>Complete order</span></a>
+            <span class='float-right'>Status: <span class='text-warning' style="color:black">{{row.status}}</span></span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <ul>
+        <hr class='bg-info'>
+        {% for check_cat in Checkout_category %}
+        <li class='text-info text-right pr-3'>{{check_cat|cut:"("|cut:")"|cut:","|cut:"'"}}</li>
+        {% for row in Checkout %}
+        {% if row.category == check_cat|cut:"("|cut:")"|cut:","|cut:"'"  %}
+        <li class='pr-3 text-right'>{{row}}&nbsp;</li>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+        <hr class='bg-info'>
+        <li class='text-info text-right pr-3 '>
+          <h1><small class='text-white'>Total</small> ${{Total|floatformat:2}}</h1>
+        </li>
+      </ul>
+    </div>
+    </div>
+
+  </div>
+
+  {%endif%}
+  {% if not user.is_superuser %}
+  <nav class="navbar navbar-inverse" style="background-color: lightgray;">
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <img style="width:12%;max-height: -webkit-fill-available; float:left" src="/static/pizzahot.jpg">
+      <div>
+        <h1 style="margin-left:45%"><strong>Pizza Hut</strong></h1>
+      </div>
+      <div style="color:black">
+        <ul class="mr-auto">
+          <li class="nav-item dropdown">
+            <a class=" navbar-text" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" style="color:black">
+              <stronng>Menu</stronng>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+              {% for category in Category %}
+              <a class="dropdown-item navbar-text" href="{% url 'menu' category  %}"
+                class="list-group-item list-group-item-action" style="color:black">{{category}}</a>
+              {% endfor %}
+
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="navbar-text" href="{% url 'my_orders' Order_number %}" style="color:black"><strong>My Orders</strong></a>
+
+          </li>
+
+        </ul>
+        <ul class="ml-auto">
+          <a class="ml-auto navbar-text" href=# style="color:black; float:right">{{user.username}}</a>
+          <a class="ml-auto navbar-text" href="{% url 'logout' %}" style="color:black; float:right" > Log out&nbsp;</a>
+
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div id='center_box' class='w-50  mx-auto  '>
+    {% block body%}
+    {% endblock %}
+  </div>
+
+  <div id='center_box' class='w-50  mx-auto'>
+    {% if Checkout_category %}
+    <!--hide when not logged in-->
+    <h3 class=' text-right pr-3'>SALE</h3>
+    <ul>
+      <hr class='bg-info'>
+      {% for check_cat in Checkout_category %}
+      <li class='text-info text-right pr-3'>{{check_cat|cut:"("|cut:")"|cut:","|cut:"'"}}</li>
+      {% for row in Checkout %}
+      {% if row.category == check_cat|cut:"("|cut:")"|cut:","|cut:"'"  %}
+      <li class='pr-3' style="color:black">{{row}}&nbsp;<a href="{% url 'delete' row.category row.name row.price %}"><img
+            class='plus rounded' src="{% static 'minus.png' %}"></a></li>
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
+      <hr class='bg-info'>
+      <li class='text-info text-right pr-3 '>
+        <h1><small class='text-white' style="color:black">Total</small> ${{Total|floatformat:2}}</h1>
+      </li>
+    </ul>
+
+    <a id='place_order' href="{% url 'my_orders' Order_number %}">
+      <div class='bg-info w-50 rounded p-2  ml-auto mr-3 text-center text-white '>
+        <h4 style="color:black"><strong>Place order</strong></h4>
+      </div>
+    </a>
+    {% endif %}
+  </div>
+
+
+
+  {% endif %}
+
+
+
+  {% endif %}
+  
+</body>
+
+</html>

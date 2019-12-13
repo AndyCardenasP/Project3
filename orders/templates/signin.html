@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html style="height:100%">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styleini.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+        integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <title>Pizza Hut</title>
+</head>
+
+<body style="width:100%;height: 100vh; background-image: url(/static/pizzafondo2.jpg); background-size: 135%;">
+    <div class="row" style="height:12%;background-color:lightgray;flex-direction: column">
+        <img style="width:12%;max-height: -webkit-fill-available" src="/static/pizzahot.jpg">
+        <div>
+            <h1 style="margin-left:-10%"><strong>Pizza Hut</strong><i class="fas fa-pizza-slice"></i></h1>
+        </div>
+    </div>
+    <div class="col-xs-8 col-xs-2-offset" style="padding:3% 5% 5% 5%;">
+        <div class=' mx-auto w-50 p-3' style="border: 2px black solid; background-color:peachpuff">
+            {% if message %}
+            <div class='text-center' style="color: salmon;">
+                {{message}}
+            </div>
+            {% endif %}
+            <form class='m-5' action="{% url 'signin' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">First name:</label>
+                    <input type="text" class="form-control" name="first_name">
+                </div>
+                <div class="form-group">
+                    <label for="username">Last name:</label>
+                    <input type="text" class="form-control" name="last_name">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" name="password">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Retype Password:</label>
+                    <input type="password" class="form-control" name="password2">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+            <div class='text-center m-2'>
+                You already have an account? <a href="{% url 'login'%}">Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="height: 15%; background-color: lightgray;text-align: center;">
+        <h5 style="margin-top:2%;margin-left:33%"><strong>(c) 2019-2020, Pizza Hut, Ibarra-Ecuador
+        </strong></h5>
+    </div>
+</body>

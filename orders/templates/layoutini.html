@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html style="height:100%">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'styleini.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  
+  <title>Pizza Hut</title>
+</head>
+
+<body style="width:100%;height: 100vh;">
+  <div class="row" style="height:12%;background-color:gray;">
+    <img style="width:12%;position:fixed;top:0px" src="/static/pizzahot.jpg">
+    <h1 style="margin:auto; position:fixed;margin-left:50%"><strong>Pizza Hut</strong></a><i class="fas fa-pizza-slice"></i></h1>
+  </div>
+
+  <div style=width:100% id="center_cl" class='w-55 mx-auto '>
+    {% block body%}
+    {% endblock %}
+ 
